@@ -124,15 +124,21 @@ namespace GridHack
                 height = y2 - y + 1;
 
                 // Get the area of the primary screen
-                int sWidth = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Width;
-                int sHeight = System.Windows.Forms.Screen.PrimaryScreen.WorkingArea.Height;
+                int sWidth = Screen.FromHandle(hwnd).WorkingArea.Width;
+                int sHeight = Screen.FromHandle(hwnd).WorkingArea.Height;
 
                 // Calculate grid width in screen terms
                 int cWidth = sWidth / gridSize;
                 int cHeight = sHeight / gridSize;
 
                 // Resize the window to fit in this grid space
-                SetWindowPos(hwnd, (IntPtr)0, x * cWidth, y * cHeight, width * cWidth, height * cHeight, 0);
+                // Resize the window to fit in this grid space
+                SetWindowPos(hwnd, (IntPtr)0, 
+                    x * cWidth + Screen.FromHandle(hwnd).Bounds.X,
+                    y * cHeight + Screen.FromHandle(hwnd).Bounds.Y,
+                    width * cWidth,
+                    height * cHeight, 
+                    0);
 
                 this.Hide();
             }
